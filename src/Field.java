@@ -44,7 +44,7 @@ public class Field implements FieldInterface {
         if (chessPiece.getColor().equals("Black")) {
             getChessPiece().returnPieceType();
             if (getChessPiece().getPieceType().equals("King")) {
-                return "Dk";
+                return "DK";
             }
             if (getChessPiece().getPieceType().equals("Rook")) {
                 return "DR";

@@ -1,5 +1,6 @@
 public class Board implements BoardInterface{
     Field[][] board = new Field[8][8];
+    public boolean killPiece;
     public Board() {
         board[0][0].setChessPiece(new Rook("White"));
         board[1][0].setChessPiece(new Knight("White"));
@@ -39,13 +40,15 @@ public class Board implements BoardInterface{
 
     }
     public boolean movePieceForward (int xFrom, int yFrom){
-        if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom+1 <= 7){
-            if (board[xFrom +1][yFrom] == null){
+        if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom+1 <= 7 && !killPiece){
+            if (board[xFrom +1][yFrom] == null || board[xFrom +1][yFrom].getChessPiece().color.equals("Black")){
                 ChessPiece hand = board[xFrom][yFrom].getChessPiece();
                 board[xFrom][yFrom] = null;
                 board[xFrom +1][yFrom].setChessPiece(hand);
+                if(board[xFrom +1][yFrom].getChessPiece().color.equals("Black")){
+                    killPiece=true;
+                }
                 return true;
-            }
 
 
         }
@@ -193,5 +196,9 @@ public class Board implements BoardInterface{
     @Override
     public Field[][] getBoardState() {
         return new Field[0][];
+    }
+
+    public void setKillPiece(boolean killPiece){
+        this.killPiece = killPiece;
     }
 }
