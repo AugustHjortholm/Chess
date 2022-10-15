@@ -1,3 +1,3 @@
 public interface BoardInterface {
-    public Field[][] getBoardState();
+    Field[][] getBoardState();
 }

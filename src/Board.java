@@ -1,6 +1,6 @@
 public class Board implements BoardInterface{
+    Field[][] board = new Field[8][8];
     public Board() {
-        Field[][] board = new Field[8][8];
         board[0][0].setChessPiece(new Rook("White"));
         board[1][0].setChessPiece(new Knight("White"));
         board[2][0].setChessPiece(new Bishop("White"));
@@ -38,8 +38,12 @@ public class Board implements BoardInterface{
         board[7][6].setChessPiece(new Pawn ("Black"));
 
     }
-    private void movePiece (){
-        Field []
+    private void movePiece (int xFrom, int yFrom, int xTo, int yTo){
+        ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+        board[xFrom][yFrom] = null;
+        board[xTo][yTo].setChessPiece(hand);
+
+
 
 
     }
