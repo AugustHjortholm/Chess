@@ -8,4 +8,9 @@ public class Pawn extends ChessPiece{
     public String getPieceType(){
         return "Pawn";
     }
+
+    public void PawnMove(){
+
+
+    }
 }
