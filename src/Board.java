@@ -15,125 +15,132 @@ public class Board implements BoardInterface {
                 board [i][j] = new Field();
             }
         }
+        //TODO swap x and y positions
         board[0][0].setChessPiece(new Rook("White"));
-        board[1][0].setChessPiece(new Knight("White"));
-        board[2][0].setChessPiece(new Bishop("White"));
-        board[3][0].setChessPiece(new Queen("White"));
-        board[4][0].setChessPiece(new King("White"));
-        board[5][0].setChessPiece(new Bishop("White"));
-        board[6][0].setChessPiece(new Knight("White"));
-        board[7][0].setChessPiece(new Rook("White"));
+        board[0][1].setChessPiece(new Knight("White"));
+        board[0][2].setChessPiece(new Bishop("White"));
+        board[0][3].setChessPiece(new Queen("White"));
+        board[0][4].setChessPiece(new King("White"));
+        board[0][5].setChessPiece(new Bishop("White"));
+        board[0][6].setChessPiece(new Knight("White"));
+        board[0][7].setChessPiece(new Rook("White"));
 
-        board[0][1].setChessPiece(new Pawn("White"));
+        board[1][0].setChessPiece(new Pawn("White"));
         board[1][1].setChessPiece(new Pawn("White"));
-        board[2][1].setChessPiece(new Pawn("White"));
-        board[3][1].setChessPiece(new Pawn("White"));
-        board[4][1].setChessPiece(new Pawn("White"));
-        board[5][1].setChessPiece(new Pawn("White"));
-        board[6][1].setChessPiece(new Pawn("White"));
-        board[7][1].setChessPiece(new Pawn("White"));
+        board[1][2].setChessPiece(new Pawn("White"));
+        board[1][3].setChessPiece(new Pawn("White"));
+        board[1][4].setChessPiece(new Pawn("White"));
+        board[1][5].setChessPiece(new Pawn("White"));
+        board[1][6].setChessPiece(new Pawn("White"));
+        board[1][7].setChessPiece(new Pawn("White"));
 
-        board[0][7].setChessPiece(new Rook("Black"));
-        board[1][7].setChessPiece(new Knight("Black"));
-        board[2][7].setChessPiece(new Bishop("Black"));
-        board[3][7].setChessPiece(new Queen("Black"));
-        board[4][7].setChessPiece(new King("Black"));
-        board[5][7].setChessPiece(new Bishop("Black"));
-        board[6][7].setChessPiece(new Knight("Black"));
+        board[7][0].setChessPiece(new Rook("Black"));
+        board[7][1].setChessPiece(new Knight("Black"));
+        board[7][2].setChessPiece(new Bishop("Black"));
+        board[7][3].setChessPiece(new Queen("Black"));
+        board[7][4].setChessPiece(new King("Black"));
+        board[7][5].setChessPiece(new Bishop("Black"));
+        board[7][6].setChessPiece(new Knight("Black"));
         board[7][7].setChessPiece(new Rook("Black"));
 
-        board[0][6].setChessPiece(new Pawn("Black"));
-        board[1][6].setChessPiece(new Pawn("Black"));
-        board[2][6].setChessPiece(new Pawn("Black"));
-        board[3][6].setChessPiece(new Pawn("Black"));
-        board[4][6].setChessPiece(new Pawn("Black"));
-        board[5][6].setChessPiece(new Pawn("Black"));
+        board[6][0].setChessPiece(new Pawn("Black"));
+        board[6][1].setChessPiece(new Pawn("Black"));
+        board[6][2].setChessPiece(new Pawn("Black"));
+        board[6][3].setChessPiece(new Pawn("Black"));
+        board[6][4].setChessPiece(new Pawn("Black"));
+        board[6][5].setChessPiece(new Pawn("Black"));
         board[6][6].setChessPiece(new Pawn("Black"));
-        board[7][6].setChessPiece(new Pawn("Black"));
+        board[6][7].setChessPiece(new Pawn("Black"));
 
     }
     public boolean movePiece(int moves, int xFrom, int yFrom, Directions directions) {
-        switch (directions) {
-            case Forward -> {
-                for (int i = 0; i < moves; i++) {
-                    movePieceForward(xFrom, yFrom);
-                    if (!movePieceForward(xFrom, yFrom)||killPiece) {
-                        return false;
+        if (board[xFrom][yFrom].getChessPiece() != null) {
+            switch (directions) {
+                case Forward -> {
+                    for (int i = 0; i < moves; i++) {
+                        boolean j = movePieceForward(xFrom, yFrom);
+                        if (!j || killPiece) {
+                            return false;
+                        }
+                    }
+                }
+
+                case Backwards -> {
+                    for (int i = 0; i < moves; i++) {
+                        movePieceBackwards(xFrom, yFrom);
+                        if (!movePieceBackwards(xFrom, yFrom) || killPiece) {
+                            return false;
+                        }
+                    }
+
+                }
+                case Left -> {
+                    for (int i = 0; i < moves; i++) {
+                        movePieceLeft(xFrom, yFrom);
+                        if (!movePieceLeft(xFrom, yFrom) || killPiece) {
+                            return false;
+                        }
+                    }
+                }
+                case Right -> {
+                    for (int i = 0; i < moves; i++) {
+                        movePieceRight(xFrom, yFrom);
+                        if (!movePieceRight(xFrom, yFrom) || killPiece) {
+                            return false;
+                        }
+                    }
+                }
+                case ForwardLeft -> {
+                    for (int i = 0; i < moves; i++) {
+                        movePieceDiagnalLeft(xFrom, yFrom);
+                        if (!movePieceDiagnalLeft(xFrom, yFrom) || killPiece) {
+                            return false;
+                        }
+                    }
+                }
+                case ForwardRight -> {
+                    for (int i = 0; i < moves; i++) {
+                        movePieceDiagnalRight(xFrom, yFrom);
+                        if (!movePieceDiagnalRight(xFrom, yFrom) || killPiece) {
+                            return false;
+                        }
+                    }
+                }
+                case BackwardsRight -> {
+                    for (int i = 0; i < moves; i++) {
+                        movePieceDiagnalBackRight(xFrom, yFrom);
+                        if (!movePieceDiagnalBackRight(xFrom, yFrom) || killPiece) {
+                            return false;
+                        }
+                    }
+                }
+                case BackwardsLeft -> {
+                    for (int i = 0; i < moves; i++) {
+                        movePieceDiagnalBackLeft(xFrom, yFrom);
+                        if (!movePieceDiagnalBackLeft(xFrom, yFrom) || killPiece) {
+                            return false;
+                        }
                     }
                 }
             }
 
-            case Backwards -> {
-                for (int i = 0; i < moves; i++) {
-                movePieceBackwards(xFrom, yFrom);
-                    if (!movePieceBackwards(xFrom, yFrom)||killPiece) {
-                        return false;
-                    }
-            }
-
-            }
-            case Left -> {
-                for (int i = 0; i < moves; i++) {
-                    movePieceLeft(xFrom, yFrom);
-                    if (!movePieceLeft(xFrom, yFrom)||killPiece) {
-                        return false;
-                    }
-                }
-            }
-            case Right -> {
-                for (int i = 0; i < moves; i++) {
-                    movePieceRight(xFrom, yFrom);
-                    if (!movePieceRight(xFrom, yFrom)||killPiece) {
-                        return false;
-                    }
-                }
-            }
-            case ForwardLeft -> {
-                for (int i = 0; i < moves; i++) {
-                    movePieceDiagnalLeft(xFrom, yFrom);
-                    if (!movePieceDiagnalLeft(xFrom, yFrom)||killPiece) {
-                        return false;
-                    }
-                }
-            }
-            case ForwardRight -> {
-                for (int i = 0; i < moves; i++) {
-                    movePieceDiagnalRight(xFrom, yFrom);
-                    if (!movePieceDiagnalRight(xFrom, yFrom)||killPiece) {
-                        return false;
-                    }
-                }
-            }
-            case BackwardsRight -> {
-                for (int i = 0; i < moves; i++) {
-                    movePieceDiagnalBackRight(xFrom, yFrom);
-                    if (!movePieceDiagnalBackRight(xFrom, yFrom)||killPiece) {
-                        return false;
-                    }
-                }
-            }
-            case BackwardsLeft -> {
-                for (int i = 0; i < moves; i++) {
-                    movePieceDiagnalBackLeft(xFrom, yFrom);
-                    if (!movePieceDiagnalBackLeft(xFrom, yFrom)||killPiece) {
-                        return false;
-                    }
-                }
-            }
         }
-       return true;
+        return true;
     }
 
     public boolean movePieceForward(int xFrom, int yFrom) {
         if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom + 1 <= 7 && !killPiece) {
-            if (board[xFrom + 1][yFrom] == null || board[xFrom + 1][yFrom].getChessPiece().color.equals("Black")) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                if (board[xFrom + 1][yFrom].getChessPiece().color.equals("Black")) {
-                    killPiece = true;
-                }
-                board[xFrom + 1][yFrom].setChessPiece(hand);
+            if (board[xFrom + 1][yFrom].getChessPiece() == null || board[xFrom + 1][yFrom].getChessPiece().color.equals("Black")){
+                        ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                        board[xFrom][yFrom].setChessPiece(null);
+                        if (board[xFrom + 1][yFrom].isEmpty()) {
+                            killPiece = true;
+                        }
+
+                        board[xFrom + 1][yFrom].setChessPiece(hand);
+
                 return true;
+
 
 
                 //TODO på alle movePiece
