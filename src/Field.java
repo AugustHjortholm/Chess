@@ -2,7 +2,7 @@ public class Field implements FieldInterface {
     // TODO
     @Override
     public ChessPiece getChessPiece() {
-        return null;
+        return chessPiece;
     }
 
     public ChessPiece chessPiece;
@@ -18,9 +18,11 @@ public class Field implements FieldInterface {
     }
 
     public String convertChessPieceToString() {
+        if (getChessPiece() == null){
+            return "  ";
+        }
 
         if (chessPiece.getColor().equals("White")) {
-            getChessPiece().returnPieceType();
             if (getChessPiece().getPieceType().equals("King")) {
                 return "Lk";
             }
@@ -63,6 +65,7 @@ public class Field implements FieldInterface {
             }
         }
         return "  ";
+
     }
 }
 

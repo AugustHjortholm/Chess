@@ -1,7 +1,20 @@
-public class Board implements BoardInterface{
+public class Board implements BoardInterface {
     Field[][] board = new Field[8][8];
     public boolean killPiece;
+
+    enum Directions {
+        Forward, Backwards, Left, Right, ForwardLeft, ForwardRight, BackwardsRight, BackwardsLeft
+
+    }
+
+
     public Board() {
+        for (int i = 0; i < 8; i++) {
+
+            for (int j = 0; j < 8; j++) {
+                board [i][j] = new Field();
+            }
+        }
         board[0][0].setChessPiece(new Rook("White"));
         board[1][0].setChessPiece(new Knight("White"));
         board[2][0].setChessPiece(new Bishop("White"));
@@ -18,7 +31,7 @@ public class Board implements BoardInterface{
         board[4][1].setChessPiece(new Pawn("White"));
         board[5][1].setChessPiece(new Pawn("White"));
         board[6][1].setChessPiece(new Pawn("White"));
-        board[7][1].setChessPiece(new Pawn ("White"));
+        board[7][1].setChessPiece(new Pawn("White"));
 
         board[0][7].setChessPiece(new Rook("Black"));
         board[1][7].setChessPiece(new Knight("Black"));
@@ -36,169 +49,244 @@ public class Board implements BoardInterface{
         board[4][6].setChessPiece(new Pawn("Black"));
         board[5][6].setChessPiece(new Pawn("Black"));
         board[6][6].setChessPiece(new Pawn("Black"));
-        board[7][6].setChessPiece(new Pawn ("Black"));
+        board[7][6].setChessPiece(new Pawn("Black"));
 
     }
-    public boolean movePieceForward (int xFrom, int yFrom){
-        if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom+1 <= 7 && !killPiece){
-            if (board[xFrom +1][yFrom] == null || board[xFrom +1][yFrom].getChessPiece().color.equals("Black")){
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom +1][yFrom].setChessPiece(hand);
-                if(board[xFrom +1][yFrom].getChessPiece().color.equals("Black")){
-                    killPiece=true;
+    public boolean movePiece(int moves, int xFrom, int yFrom, Directions directions) {
+        switch (directions) {
+            case Forward -> {
+                for (int i = 0; i < moves; i++) {
+                    movePieceForward(xFrom, yFrom);
+                    if (!movePieceForward(xFrom, yFrom)||killPiece) {
+                        return false;
+                    }
                 }
-                return true;
+            }
 
+            case Backwards -> {
+                for (int i = 0; i < moves; i++) {
+                movePieceBackwards(xFrom, yFrom);
+                    if (!movePieceBackwards(xFrom, yFrom)||killPiece) {
+                        return false;
+                    }
+            }
 
-        }
-        else if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom-1 >= 0){
-            if (board[xFrom -1][yFrom] == null){
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom -1][yFrom].setChessPiece(hand);
-                return true;
+            }
+            case Left -> {
+                for (int i = 0; i < moves; i++) {
+                    movePieceLeft(xFrom, yFrom);
+                    if (!movePieceLeft(xFrom, yFrom)||killPiece) {
+                        return false;
+                    }
+                }
+            }
+            case Right -> {
+                for (int i = 0; i < moves; i++) {
+                    movePieceRight(xFrom, yFrom);
+                    if (!movePieceRight(xFrom, yFrom)||killPiece) {
+                        return false;
+                    }
+                }
+            }
+            case ForwardLeft -> {
+                for (int i = 0; i < moves; i++) {
+                    movePieceDiagnalLeft(xFrom, yFrom);
+                    if (!movePieceDiagnalLeft(xFrom, yFrom)||killPiece) {
+                        return false;
+                    }
+                }
+            }
+            case ForwardRight -> {
+                for (int i = 0; i < moves; i++) {
+                    movePieceDiagnalRight(xFrom, yFrom);
+                    if (!movePieceDiagnalRight(xFrom, yFrom)||killPiece) {
+                        return false;
+                    }
+                }
+            }
+            case BackwardsRight -> {
+                for (int i = 0; i < moves; i++) {
+                    movePieceDiagnalBackRight(xFrom, yFrom);
+                    if (!movePieceDiagnalBackRight(xFrom, yFrom)||killPiece) {
+                        return false;
+                    }
+                }
+            }
+            case BackwardsLeft -> {
+                for (int i = 0; i < moves; i++) {
+                    movePieceDiagnalBackLeft(xFrom, yFrom);
+                    if (!movePieceDiagnalBackLeft(xFrom, yFrom)||killPiece) {
+                        return false;
+                    }
+                }
             }
         }
-        return false;
-
+       return true;
     }
-    public boolean movePieceBackwards (int xFrom, int yFrom) {
-        if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom + 1 <= 7) {
-            if (board[xFrom + 1][yFrom] == null) {
+
+    public boolean movePieceForward(int xFrom, int yFrom) {
+        if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom + 1 <= 7 && !killPiece) {
+            if (board[xFrom + 1][yFrom] == null || board[xFrom + 1][yFrom].getChessPiece().color.equals("Black")) {
                 ChessPiece hand = board[xFrom][yFrom].getChessPiece();
                 board[xFrom][yFrom] = null;
+                if (board[xFrom + 1][yFrom].getChessPiece().color.equals("Black")) {
+                    killPiece = true;
+                }
                 board[xFrom + 1][yFrom].setChessPiece(hand);
                 return true;
-            }
 
 
-        } else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0) {
-            if (board[xFrom - 1][yFrom] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom - 1][yFrom].setChessPiece(hand);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean movePieceRight (int xFrom, int yFrom) {
-        if (yFrom + 1 <= 7) {
-            if (board[xFrom][yFrom +1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom][yFrom +1].setChessPiece(hand);
-                return true;
-            }
-
-
-        }
-        return false;
-    }
-    public boolean movePieceLeft (int xFrom, int yFrom) {
-        if (yFrom - 1 >= 0) {
-            if (board[xFrom][yFrom -1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom][yFrom -1].setChessPiece(hand);
-                return true;
-            }
-
-
-        }
-        return false;
-    }
-
-    public boolean movePieceDiagnalRight (int xFrom, int yFrom) {
-        if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom + 1 <= 7 && yFrom +1 <= 7) {
-            if (board[xFrom + 1][yFrom +1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom + 1][yFrom +1].setChessPiece(hand);
-                return true;
-            }
-
-
-        } else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0 && yFrom +1 <= 7) {
-            if (board[xFrom - 1][yFrom +1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom - 1][yFrom +1].setChessPiece(hand);
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean movePieceDiagnalLeft (int xFrom, int yFrom) {
-        if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom + 1 <= 7 && yFrom -1 >= 0) {
-            if (board[xFrom + 1][yFrom -1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom + 1][yFrom -1].setChessPiece(hand);
-                return true;
-            }
-
-
-        } else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0 && yFrom -1 >= 0) {
-            if (board[xFrom - 1][yFrom -1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom - 1][yFrom -1].setChessPiece(hand);
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean movePieceDiagnalBackLeft (int xFrom, int yFrom) {
-        if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom + 1 <= 7 && yFrom -1 >= 0) {
-            if (board[xFrom + 1][yFrom -1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom + 1][yFrom -1].setChessPiece(hand);
-                return true;
-            }
-
-
-        } else if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom - 1 >= 0 && yFrom -1 >= 0) {
-            if (board[xFrom - 1][yFrom -1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom - 1][yFrom -1].setChessPiece(hand);
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean movePieceDiagnalBackRight (int xFrom, int yFrom) {
-        if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom + 1 <= 7 && yFrom +1 <= 7) {
-            if (board[xFrom + 1][yFrom +1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom + 1][yFrom +1].setChessPiece(hand);
-                return true;
-            }
-
-
-        } else if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom - 1 >= 0 && yFrom +1 <= 7) {
-            if (board[xFrom - 1][yFrom +1] == null) {
-                ChessPiece hand = board[xFrom][yFrom].getChessPiece();
-                board[xFrom][yFrom] = null;
-                board[xFrom - 1][yFrom +1].setChessPiece(hand);
-                return true;
+                //TODO på alle movePiece
+            } else if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom - 1 >= 0) {
+                if (board[xFrom - 1][yFrom] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom - 1][yFrom].setChessPiece(hand);
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    // TODO
-    @Override
-    public Field[][] getBoardState() {
-        return new Field[0][];
+
+        public boolean movePieceBackwards ( int xFrom, int yFrom){
+            if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom + 1 <= 7) {
+                if (board[xFrom + 1][yFrom] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom + 1][yFrom].setChessPiece(hand);
+                    return true;
+                }
+
+
+            } else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0) {
+                if (board[xFrom - 1][yFrom] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom - 1][yFrom].setChessPiece(hand);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public boolean movePieceRight ( int xFrom, int yFrom){
+            if (yFrom + 1 <= 7) {
+                if (board[xFrom][yFrom + 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom][yFrom + 1].setChessPiece(hand);
+                    return true;
+                }
+
+
+            }
+            return false;
+        }
+        public boolean movePieceLeft ( int xFrom, int yFrom){
+            if (yFrom - 1 >= 0) {
+                if (board[xFrom][yFrom - 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom][yFrom - 1].setChessPiece(hand);
+                    return true;
+                }
+
+
+            }
+            return false;
+        }
+
+        public boolean movePieceDiagnalRight ( int xFrom, int yFrom){
+            if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom + 1 <= 7 && yFrom + 1 <= 7) {
+                if (board[xFrom + 1][yFrom + 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom + 1][yFrom + 1].setChessPiece(hand);
+                    return true;
+                }
+
+
+            } else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0 && yFrom + 1 <= 7) {
+                if (board[xFrom - 1][yFrom + 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom - 1][yFrom + 1].setChessPiece(hand);
+                    return true;
+                }
+            }
+            return false;
+        }
+        public boolean movePieceDiagnalLeft ( int xFrom, int yFrom){
+            if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom + 1 <= 7 && yFrom - 1 >= 0) {
+                if (board[xFrom + 1][yFrom - 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom + 1][yFrom - 1].setChessPiece(hand);
+                    return true;
+                }
+
+
+            } else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0 && yFrom - 1 >= 0) {
+                if (board[xFrom - 1][yFrom - 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom - 1][yFrom - 1].setChessPiece(hand);
+                    return true;
+                }
+            }
+            return false;
+        }
+        public boolean movePieceDiagnalBackLeft ( int xFrom, int yFrom){
+            if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom + 1 <= 7 && yFrom - 1 >= 0) {
+                if (board[xFrom + 1][yFrom - 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom + 1][yFrom - 1].setChessPiece(hand);
+                    return true;
+                }
+
+
+            } else if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom - 1 >= 0 && yFrom - 1 >= 0) {
+                if (board[xFrom - 1][yFrom - 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom - 1][yFrom - 1].setChessPiece(hand);
+                    return true;
+                }
+            }
+            return false;
+        }
+        public boolean movePieceDiagnalBackRight ( int xFrom, int yFrom){
+            if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom + 1 <= 7 && yFrom + 1 <= 7) {
+                if (board[xFrom + 1][yFrom + 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom + 1][yFrom + 1].setChessPiece(hand);
+                    return true;
+                }
+
+
+            } else if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom - 1 >= 0 && yFrom + 1 <= 7) {
+                if (board[xFrom - 1][yFrom + 1] == null) {
+                    ChessPiece hand = board[xFrom][yFrom].getChessPiece();
+                    board[xFrom][yFrom] = null;
+                    board[xFrom - 1][yFrom + 1].setChessPiece(hand);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // TODO
+        @Override
+        public Field[][] getBoardState () {
+            return board;
+        }
+
+        public void setKillPiece ( boolean killPiece){
+            this.killPiece = killPiece;
+        }
     }
 
-    public void setKillPiece(boolean killPiece){
-        this.killPiece = killPiece;
-    }
-}
