@@ -1,5 +1,7 @@
 public class ChessPiece implements ChessPieceInterface{
+
 String color;
+int moves;
     public ChessPiece(String color){
         this.color = color;
 
@@ -16,6 +18,10 @@ String color;
 
     public String getPieceType() {
         return null;
+    }
+    public int getMoves(){
+        return moves;
+
     }
 }
 

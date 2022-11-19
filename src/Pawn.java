@@ -1,7 +1,7 @@
 public class Pawn extends ChessPiece{
     public Pawn(String color) {
         super(color);
-        String movePawn;
+       moves = 2;
 
     }
     @Override
@@ -9,8 +9,7 @@ public class Pawn extends ChessPiece{
         return "Pawn";
     }
 
-    public void PawnMove(){
 
 
     }
-}
+
