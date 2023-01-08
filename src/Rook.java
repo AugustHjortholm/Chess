@@ -4,6 +4,10 @@ public class Rook extends ChessPiece{
         moves = 8;
     }
     @Override
+    public String[] getLegalMove() {
+        return new String[]{"Forward", "Left", "Right", "Backwards"};
+    }
+    @Override
     public String getPieceType(){
         return "Rook";
     }

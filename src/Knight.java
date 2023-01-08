@@ -1,7 +1,11 @@
 public class Knight extends ChessPiece{
     public Knight(String color) {
         super(color);
-        moves = 2;
+        moves = 3;
+    }
+@Override
+    public String[] getLegalMove() {
+        return new String[]{"Forward", "Right", "Left", "Backwards"};
     }
     @Override
     public String getPieceType(){

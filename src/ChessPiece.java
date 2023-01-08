@@ -11,9 +11,12 @@ int moves;
         return color;
     }
 
-    @Override
+
     public ChessPiece returnPieceType() {
         return null;
+    }
+    public String[] getLegalMove() {
+       return null ;
     }
 
     public String getPieceType() {

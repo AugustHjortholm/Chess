@@ -52,6 +52,17 @@ public class Board implements BoardInterface {
         board[7][6].setChessPiece(new Pawn("Black"));
 
     }
+    public boolean moveCheck (int moves, int xFrom, int yFrom,Directions directions) {
+       ChessPiece pieceType = board[xFrom][yFrom].getChessPiece();
+        System.out.println(board[xFrom][yFrom].getChessPiece().getPieceType());
+       String[] moveSet = pieceType.getLegalMove();
+        for (int i = 0; i < moveSet.length; i += 1) {
+            if (moveSet[i].equals(directions.toString()))
+                movePiece(moves, xFrom, yFrom, directions);
+            return true;
+        }
+        return false;
+    }
 
     public boolean movePiece(int moves, int xFrom, int yFrom, Directions directions) {
         if (moves <= board[xFrom][yFrom].getChessPiece().getMoves()) {
@@ -59,7 +70,7 @@ public class Board implements BoardInterface {
                 case Forward -> {
                     for (int i = 0; i < moves; i++) {
                         movePieceForward(xFrom, yFrom);
-                        if (!movePieceForward(xFrom, yFrom) || killPiece) { //todo
+                        if (!movePieceForward(xFrom, yFrom) || killPiece) {
                             return true;
                         }
                     }
@@ -129,11 +140,11 @@ public class Board implements BoardInterface {
     }
 
     public boolean movePieceForward(int xFrom, int yFrom) {
-        if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom + 1 <= 7 && !killPiece) {
-            if (board[xFrom + 1][yFrom] == null || board[xFrom + 1][yFrom].getChessPiece().color.equals("Black")) {
+        if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom - 1 <= 7 && !killPiece) {
+            if (board[xFrom + 1][yFrom] == null || board[xFrom + 1][yFrom].getChessPiece().color.equals("White")) {
                 ChessPiece hand = board[xFrom][yFrom].getChessPiece();
                 board[xFrom][yFrom] = null;
-                if (board[xFrom + 1][yFrom].getChessPiece().color.equals("Black")) {
+                if (board[xFrom + 1][yFrom].getChessPiece().color.equals("White")) {
                     killPiece = true;
                 }
                 board[xFrom + 1][yFrom].setChessPiece(hand);
@@ -141,11 +152,11 @@ public class Board implements BoardInterface {
 
 
                 //TODO change value so they line up with the color
-            } else if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom - 1 >= 0) {
-                if (board[xFrom - 1][yFrom] == null || board[xFrom + 1][yFrom].getChessPiece().color.equals("White")) {
+            } else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0) {
+                if (board[xFrom - 1][yFrom] == null || board[xFrom + 1][yFrom].getChessPiece().color.equals("Black")) {
                     ChessPiece hand = board[xFrom][yFrom].getChessPiece();
                     board[xFrom][yFrom] = null;
-                    if (board[xFrom - 1][yFrom].getChessPiece().color.equals("White")) {
+                    if (board[xFrom - 1][yFrom].getChessPiece().color.equals("Black")) {
                         killPiece = true;
                     }
                     board[xFrom - 1][yFrom].setChessPiece(hand);
@@ -231,7 +242,7 @@ public class Board implements BoardInterface {
             }
         }
 
-        else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom + 1 >= 0 && yFrom + 1 <= 7) {
+        else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0 && yFrom - 1 <= 7) {
             if (board[xFrom -1][yFrom + 1] == null || board[xFrom -1][yFrom + 1].getChessPiece().color.equals("Black")) {
                 ChessPiece hand = board[xFrom][yFrom].getChessPiece();
                 board[xFrom][yFrom] = null;
@@ -284,7 +295,7 @@ public class Board implements BoardInterface {
                 return true;
             }
 
-        } else if (board[xFrom][yFrom].getChessPiece().color.equals("white") && xFrom - 1 >= 0 && yFrom - 1 >= 0) {
+        } else if (board[xFrom][yFrom].getChessPiece().color.equals("White") && xFrom - 1 >= 0 && yFrom - 1 >= 0) {
             if (board[xFrom + 1][yFrom - 1] == null || board[xFrom + 1][yFrom - 1].getChessPiece().color.equals("White")) {
                 ChessPiece hand = board[xFrom][yFrom].getChessPiece();
                 board[xFrom][yFrom] = null;
@@ -299,7 +310,7 @@ public class Board implements BoardInterface {
         return false;
     }
         public boolean movePieceDiagnalBackRight ( int xFrom, int yFrom) {
-            if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom + 1 <= 7 && yFrom + 1 >= 0) {
+            if (board[xFrom][yFrom].getChessPiece().color.equals("Black") && xFrom + 1 <= 7 && yFrom - 1 >= 0) {
                 if (board[xFrom - 1][yFrom + 1] == null || board[xFrom - 1][yFrom + 1].getChessPiece().color.equals("White")) {
                     ChessPiece hand = board[xFrom][yFrom].getChessPiece();
                     board[xFrom][yFrom] = null;
