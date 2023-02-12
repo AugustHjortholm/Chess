@@ -14,8 +14,12 @@ public class Field implements FieldInterface {
 
     @Override
     public boolean isEmpty() {
+        if (chessPiece == null) {
+            return true;
+        }
         return false;
     }
+
 
     public String convertChessPieceToString() {
         if (getChessPiece() == null){

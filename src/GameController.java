@@ -33,11 +33,11 @@ public class GameController implements GameControllerInterface{
     public void testMovement(){
         Board board = new Board();
         printBoard(board);
-        board.movePiece(2, 1, 1, Board.Directions.Forward);
+        board.moveCheck(1, 1, 1, Board.Directions.Forward);
         printBoard(board);
-        board.movePiece(2, 1, 1, Board.Directions.Forward);
+        board.moveCheck(1, 1, 2, Board.Directions.Forward);
         printBoard(board);
-        board.movePiece(2, 1, 1, Board.Directions.Forward);
+        board.moveCheck(1, 1, 3, Board.Directions.Forward);
 
     }
 
